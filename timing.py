@@ -65,10 +65,18 @@ plt.savefig("Время построения.jpg")
 plt.show()
 
 """График для поиска по дереву"""
+def func2(x, a, b, c):
+    return a*np.log(x*b) + c
+
+
+popt, pcov = curve_fit(func2, N, search_time)
+print(popt)
+a, b, c = round(popt[0], 6), round(popt[1], 4), round(popt[2], 6)
+
 plt.title("Время поиска")
 
-plt.scatter(N, search_time, c="green", label=f"Среднее арифметическое время поиска {K} точек")
-plt.scatter(N, error_time, c="red", label=f"Среднеквадратичное отклонение")
+plt.errorbar(N, search_time, yerr=error_time, c="green", label=f"Среднее арифметическое время поиска {K} точек")
+plt.plot(N, func2(N, *popt), c="blue", label=f"Аппроксимация функцией: {a}*ln({b}*x) + {c}")
 
 plt.legend()
 plt.xlabel("Количество точек на плоскости")
